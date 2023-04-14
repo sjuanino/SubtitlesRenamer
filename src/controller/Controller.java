@@ -98,7 +98,7 @@ public class Controller {
         episode = new Episode();
         // Se devuelve una opción despues de haber seleccionado una carpeta
         // en el JFileChooser
-        int option = openFileChooser("Seleccionar Episodio", new File(frame.getTxtDirectory().getText()));
+        int option = openFileChooser("Select episode", new File(frame.getTxtDirectory().getText()));
         if (option == JFileChooser.APPROVE_OPTION) {
             // Se eliminan todos los JRadioButtons con el nombre de los subtítulos
             Utilities.removeRadioButtons(frame.getPnlRadioButtons());
@@ -142,7 +142,7 @@ public class Controller {
                     }
                 }
             }
-            // Se crean los JRadioButtons para cada uno de los subtitlos que aparecen en la lista
+            // Se crean los JRadioButtons para cada uno de los subtítulos que aparecen en la lista
             Utilities.createRadioButtons(episode.getSubtitles(), episode.getTitle(), episode.getFolder(),
                     frame.getPnlRadioButtons(), frame.getLblProceso(), frame.getBtnGroupEpisode());
 

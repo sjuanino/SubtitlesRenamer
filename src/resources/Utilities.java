@@ -119,7 +119,7 @@ public final class Utilities {
     }
     
     /**
-     * Abre un archivo de subtitulos y lo lee, de forma que despues de cada linea
+     * Abre un archivo de subtítulos y lo lee, de forma que despues de cada linea
      * se agrega "\r\n"
      * @param subFile El archivo de subtítulos
      * @param epTitle Título del episodio
@@ -166,48 +166,6 @@ public final class Utilities {
     public static void copyOneFile(File source, File dest) throws IOException {
         Files.copy(source.toPath(), dest.toPath());
     }
-    
-    /**
-     * Crea los JRadioButtons para todos los subtítulos que se le hayan agregado a 
-     * un objeto Episodio
-     * @param subFile Archivo de subtitulos
-     * @param epTitle Título del episoidio
-     * @param epDir Directorio del episodio
-     * @param panel Panel en el que se van a agregar los JRadioButton
-     * @param label Etiqueta
-     * @param btnGroup ButtonGroup al que se van a añadir los JRadioButtons, para 
-     * que solo se pueda elegir uno de ellos
-     * @param order Número del subtitluo a añadir, servira para colocar 
-     */
-//    public static void createRadioButtons(File subFile, String epTitle, 
-//            String epDir, JPanel panel, JLabel label, ButtonGroup btnGroup, int order) {
-//
-//        JRadioButton rButton = new JRadioButton(subFile.getName() + " (" + (subFile.length() / 1000) + " KB)");
-//        btnGroup.add(rButton);
-//
-//        if (order == 0) {
-//            x = 0;
-//        } else if (order % 3 != 0) {
-//            x++;
-//        } else {
-//            x = 0;
-//            y++;
-//        }
-//        addItem(panel, rButton, x, y, 1, 1, GridBagConstraints.FIRST_LINE_START);
-//        panel.revalidate();
-//        panel.repaint();
-//
-//        rButton.addActionListener(new ActionListener() {
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                Utilities.transformSrtFile(subFile, epTitle, epDir);
-//                label.setVisible(true);
-//                label.setText("Proceso Finalizado");
-//            }
-//        });
-//
-//    }
     
     /**
      * Crea los JRadioButtons para todos los subtítulos que se le hayan 

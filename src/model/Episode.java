@@ -23,7 +23,10 @@ public class Episode {
         subtitles = new ArrayList();
     }
     
-    /** Constructor con parámetros */
+    /** Constructor con parámetros
+    * @param title El título de un episodio
+    * @param extension La extensión de un episodio (mp4 o avi)
+    * @param folder La carpeta que contiene el episodio */
     public Episode(String title, String extension, String folder) {
         this();
         this.title = title;

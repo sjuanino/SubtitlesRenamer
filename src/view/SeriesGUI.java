@@ -1,12 +1,13 @@
 package view;
 
 import controller.Controller;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -26,6 +27,7 @@ public class SeriesGUI extends javax.swing.JFrame {
     public String mp4 = null;
     public JFileChooser fileChooser;
     private DefaultTableModel jTableModelo;
+    private DefaultTableModel jTableModelEp;
     private DefaultListModel jListModelo;
 
     /**
@@ -37,6 +39,7 @@ public class SeriesGUI extends javax.swing.JFrame {
         cleanTxtFields();
         initJtable();
         initJList();
+        initIcon();
     }
     
     /**
@@ -58,9 +61,9 @@ public class SeriesGUI extends javax.swing.JFrame {
         btnSearch = new javax.swing.JButton();
         scrollPaneList = new javax.swing.JScrollPane();
         jlFiles = new javax.swing.JList<>();
-        btnExit = new javax.swing.JButton();
         pnlRadioButtons = new javax.swing.JPanel();
         lblProceso = new javax.swing.JLabel();
+        btnExitEpisode = new javax.swing.JButton();
         panelSeason = new javax.swing.JPanel();
         scrollPaneTable = new javax.swing.JScrollPane();
         tblEpisodes = new javax.swing.JTable();
@@ -68,28 +71,31 @@ public class SeriesGUI extends javax.swing.JFrame {
         txtDirEpisodes = new javax.swing.JTextField();
         btnSearchEps = new javax.swing.JButton();
         lblFinProcesoSubs = new javax.swing.JLabel();
+        btnExitSeason = new javax.swing.JButton();
 
         jFormattedTextField1.setText("jFormattedTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SubtitlesRenamer");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(new java.awt.Dimension(600, 600));
+        setMaximumSize(new java.awt.Dimension(900, 550));
         setPreferredSize(new java.awt.Dimension(900, 550));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        tabs.setMinimumSize(new java.awt.Dimension(800, 430));
-        tabs.setPreferredSize(new java.awt.Dimension(800, 450));
+        tabs.setMinimumSize(new java.awt.Dimension(600, 400));
+        tabs.setPreferredSize(new java.awt.Dimension(600, 400));
 
         panelEpisode.setMinimumSize(new java.awt.Dimension(300, 400));
         panelEpisode.setPreferredSize(new java.awt.Dimension(620, 420));
         panelEpisode.setLayout(new java.awt.GridBagLayout());
+
+        txtDirectory.setPreferredSize(new java.awt.Dimension(300, 22));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelEpisode.add(txtDirectory, gridBagConstraints);
@@ -101,10 +107,11 @@ public class SeriesGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelEpisode.add(btnSearch, gridBagConstraints);
 
@@ -116,35 +123,23 @@ public class SeriesGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 100;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelEpisode.add(scrollPaneList, gridBagConstraints);
-
-        btnExit.setText("Salir");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        panelEpisode.add(btnExit, gridBagConstraints);
 
         pnlRadioButtons.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         pnlRadioButtons.setAutoscrolls(true);
         pnlRadioButtons.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelEpisode.add(pnlRadioButtons, gridBagConstraints);
@@ -155,15 +150,35 @@ public class SeriesGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelEpisode.add(lblProceso, gridBagConstraints);
 
-        tabs.addTab("Episodio Único", panelEpisode);
+        btnExitEpisode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/door1.png"))); // NOI18N
+        btnExitEpisode.setText("Exit");
+        btnExitEpisode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitEpisodeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panelEpisode.add(btnExitEpisode, gridBagConstraints);
 
+        tabs.addTab("Episode", panelEpisode);
+
+        panelSeason.setMinimumSize(new java.awt.Dimension(300, 400));
+        panelSeason.setPreferredSize(new java.awt.Dimension(620, 420));
         panelSeason.setLayout(new java.awt.GridBagLayout());
 
-        scrollPaneTable.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPaneTable.setPreferredSize(new java.awt.Dimension(100, 100));
 
         tblEpisodes.setModel(new javax.swing.table.DefaultTableModel(
@@ -176,7 +191,9 @@ public class SeriesGUI extends javax.swing.JFrame {
                 "Title 1"
             }
         ));
+        tblEpisodes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tblEpisodes.setAutoscrolls(false);
+        tblEpisodes.setFillsViewportHeight(true);
         tblEpisodes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblEpisodesMouseClicked(evt);
@@ -187,10 +204,9 @@ public class SeriesGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 100;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelSeason.add(scrollPaneTable, gridBagConstraints);
@@ -203,7 +219,7 @@ public class SeriesGUI extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelSeason.add(pnlTempRadioBtns, gridBagConstraints);
@@ -211,8 +227,8 @@ public class SeriesGUI extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelSeason.add(txtDirEpisodes, gridBagConstraints);
@@ -226,8 +242,9 @@ public class SeriesGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelSeason.add(btnSearchEps, gridBagConstraints);
 
@@ -235,14 +252,32 @@ public class SeriesGUI extends javax.swing.JFrame {
         lblFinProcesoSubs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblFinProcesoSubs.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         panelSeason.add(lblFinProcesoSubs, gridBagConstraints);
 
-        tabs.addTab("Temporada Completa", panelSeason);
+        btnExitSeason.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/door1.png"))); // NOI18N
+        btnExitSeason.setText("Exit");
+        btnExitSeason.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitSeasonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panelSeason.add(btnExitSeason, gridBagConstraints);
+
+        tabs.addTab("Season", panelSeason);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -255,6 +290,37 @@ public class SeriesGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExitSeasonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitSeasonActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnExitSeasonActionPerformed
+
+    private void btnSearchEpsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchEpsActionPerformed
+        cleanTxtFields();
+        clearJTable();
+        Utilities.removeRadioButtons(this.pnlTempRadioBtns);
+        Controller.searchSeason();
+    }//GEN-LAST:event_btnSearchEpsActionPerformed
+
+    private void tblEpisodesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEpisodesMouseClicked
+        Utilities.removeRadioButtons(this.pnlTempRadioBtns);
+        this.lblFinProcesoSubs.setVisible(false);
+        int row = tblEpisodes.rowAtPoint(evt.getPoint());
+        int column = tblEpisodes.columnAtPoint(evt.getPoint());
+        String dato = String.valueOf(this.tblEpisodes.getValueAt(row,column)); // se obtiene el valor de la celda
+        Controller.episodeClicked(dato);
+    }//GEN-LAST:event_tblEpisodesMouseClicked
+
+    private void btnExitEpisodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitEpisodeActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnExitEpisodeActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        this.cleanTxtFields();
+        this.clearJList();
+        Utilities.removeRadioButtons(this.pnlRadioButtons);
+        Controller.searchEpisode();
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     //========================================================================//
     // Metodos para limpiar o preparar componentes                            //
@@ -277,9 +343,21 @@ public class SeriesGUI extends javax.swing.JFrame {
     /** Inicia la JTable */
     private void initJtable() {
         jTableModelo = new DefaultTableModel();
+        jTableModelEp = new DefaultTableModel();
         tblEpisodes.setModel(jTableModelo);
         tblEpisodes.setDefaultEditor(Object.class, null); // Hace que las celdas no sean editables  
-        jTableModelo.addColumn("Episodios");
+        jTableModelo.addColumn("Episodes");
+    }
+    
+    /** Pinta el icono en el jFrame */
+    private void initIcon() {
+        try {
+            URL resource = getClass().getResource("/resources/subtitle32.png");
+            BufferedImage image = ImageIO.read(resource);
+            this.setIconImage(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     /** Elimina los elementos que estaban en la JTable */
@@ -294,33 +372,6 @@ public class SeriesGUI extends javax.swing.JFrame {
         listModel.removeAllElements();
     }
         
-    private void btnSearchEpsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchEpsActionPerformed
-        cleanTxtFields();
-        clearJTable();
-        Utilities.removeRadioButtons(this.pnlTempRadioBtns);
-        Controller.searchSeason();
-    }//GEN-LAST:event_btnSearchEpsActionPerformed
-
-    private void tblEpisodesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEpisodesMouseClicked
-        Utilities.removeRadioButtons(this.pnlTempRadioBtns);
-        this.lblFinProcesoSubs.setVisible(false);
-        int row = tblEpisodes.rowAtPoint(evt.getPoint());
-        int column = tblEpisodes.columnAtPoint(evt.getPoint());
-        String dato = String.valueOf(this.tblEpisodes.getValueAt(row,column)); // se obtiene el valor de la celda
-        Controller.episodeClicked(dato);
-    }//GEN-LAST:event_tblEpisodesMouseClicked
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_btnExitActionPerformed
-
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        this.cleanTxtFields();
-        this.clearJList();
-        Utilities.removeRadioButtons(this.pnlRadioButtons);
-        Controller.searchEpisode();
-    }//GEN-LAST:event_btnSearchActionPerformed
-
     //========================================================================//
     // Setters y Getters de los componentes                                   //
     //========================================================================// 
@@ -447,7 +498,8 @@ public class SeriesGUI extends javax.swing.JFrame {
        
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnExitEpisode;
+    private javax.swing.JButton btnExitSeason;
     private javax.swing.ButtonGroup btnGroupEpisode;
     private javax.swing.ButtonGroup btnGroupSeason;
     private javax.swing.JButton btnSearch;
