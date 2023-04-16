@@ -46,6 +46,15 @@ public final class Utilities {
     
     /**
      * 
+     * @param nameFile nombre del archivo
+     * @return Devuelve el nombre de un archivo sin la extensión
+     */
+    public static String returnName(String nameFile) {
+        return nameFile.substring(0, nameFile.lastIndexOf('.'));
+    }
+    
+    /**
+     * 
      * @param directoryPath La ruta del directorio
      * @return Devuelve todos los archivos de un directorio, y sus subdirectorios
      */
@@ -58,8 +67,7 @@ public final class Utilities {
             if (file.isDirectory()) {
                  resultList.addAll(listf(file.getAbsolutePath()));
             }
-        }
-           
+        }            
         return resultList;
     } 
     
@@ -161,10 +169,14 @@ public final class Utilities {
      * Copia un archivo de una fuente a otro destino
      * @param source Archivo fuente
      * @param dest Archivo destino
-     * @throws IOException 
      */
-    public static void copyOneFile(File source, File dest) throws IOException {
-        Files.copy(source.toPath(), dest.toPath());
+    public static void copyOneFile(File source, File dest) {
+        try {
+            Files.copy(source.toPath(), dest.toPath()); 
+        } catch (IOException e) { 
+            e.printStackTrace();
+        }
+
     }
     
     /**
@@ -204,7 +216,7 @@ public final class Utilities {
                 public void actionPerformed(ActionEvent e) {
                     Utilities.transformSrtFile(f, epTitle, epDir);
                     label.setVisible(true);
-                    label.setText("Proceso Finalizado");
+                    label.setText("Subtitle renamed");
                 }
             });
         }

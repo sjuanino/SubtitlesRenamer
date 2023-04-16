@@ -1,10 +1,12 @@
 package controller;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.DefaultEditorKit;
@@ -108,6 +110,9 @@ public class Controller {
             File episodeDirectory = frame.getFileChooser().getSelectedFile();
             frame.getTxtDirectory().setText(episodeDirectory.toString());
             
+            // Se añade a txtSaveFile la ruta de la carpeta padre de la seleccionada
+            frame.getTxtSaveFile().setText(episodeDirectory.getParent());
+            
             // Se introducen en una lista todos los archivos del directorio elegido
             // y sus subdirectorios
             List<File> listFile = Utilities.listf(episodeDirectory.toString());
@@ -149,6 +154,35 @@ public class Controller {
             frame.revalidate();
             frame.repaint();
             frame.pack();
+        }
+    }
+    
+    public static void copyEpisode() {
+        ArrayList<File> filesCopy = new ArrayList<>();
+        File folder = new File(episode.getFolder());
+        File[] files = folder.listFiles();
+        for (File file: files){
+            if (file.isFile()) {
+                if (Utilities.returnName(file.getName()).equals(episode.getTitle())) {
+                    filesCopy.add(file);
+                }
+            }
+        }
+        if (filesCopy.size() == 2) {
+            for (File f: filesCopy)
+                if (!frame.getTxtSaveFile().getText().isBlank()) {
+                    Utilities.copyOneFile(f, new File(frame.getTxtSaveFile().getText() + "\\" + f.getName()));
+                }
+        } else {
+             JOptionPane.showMessageDialog(null, "There is not enough files to copy");
+        }
+    }
+    
+    public static void selectFolderCopy() {
+        int option = openFileChooser("Select Folder", new File(frame.getTxtDirectory().getText()));
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File episodeDirectory = frame.getFileChooser().getSelectedFile();
+            frame.getTxtSaveFile().setText(episodeDirectory.toString());
         }
     }
     
@@ -249,9 +283,9 @@ public class Controller {
         
         // Se hace un menu contextual con la opcion de pegar
         JPopupMenu menu = new JPopupMenu();
-        Action pegar = new DefaultEditorKit.PasteAction();
-        pegar.putValue(Action.NAME, "Paste");
-        menu.add(pegar);        
+        Action pasteMenu = new DefaultEditorKit.PasteAction();
+        pasteMenu.putValue(Action.NAME, "Paste");
+        menu.add(pasteMenu);        
         frame.getFileChooser().setComponentPopupMenu(menu);
         
         return frame.getFileChooser().showOpenDialog(frame);
