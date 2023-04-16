@@ -157,7 +157,12 @@ public class Controller {
         }
     }
     
-    public static void copyEpisode() {
+    /**
+     * El método comprueba que en la carpeta en la que se ha renombrado el subtitulo,
+     * contiene ambos archivos, el video y el subtitulo, ambos con el mismo nombre y
+     * los mueve a la carpeta que se ha seleccionado
+     */
+    public static void moveEpisode() {
         ArrayList<File> filesCopy = new ArrayList<>();
         File folder = new File(episode.getFolder());
         File[] files = folder.listFiles();
@@ -171,13 +176,17 @@ public class Controller {
         if (filesCopy.size() == 2) {
             for (File f: filesCopy)
                 if (!frame.getTxtSaveFile().getText().isBlank()) {
-                    Utilities.copyOneFile(f, new File(frame.getTxtSaveFile().getText() + "\\" + f.getName()));
+                    Utilities.moveOneFile(f, new File(frame.getTxtSaveFile().getText() + "\\" + f.getName()));
                 }
         } else {
              JOptionPane.showMessageDialog(null, "There is not enough files to copy");
         }
     }
     
+    /** 
+     * Se selecciona una carpeta para guardar el archivo de video y el subtítulo,
+     * que se acaba de renombrar
+     */
     public static void selectFolderCopy() {
         int option = openFileChooser("Select Folder", new File(frame.getTxtDirectory().getText()));
         if (option == JFileChooser.APPROVE_OPTION) {

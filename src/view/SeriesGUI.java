@@ -371,7 +371,7 @@ public class SeriesGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        Controller.copyEpisode(); 
+        Controller.moveEpisode(); 
         this.cleanTxtFields();
         this.clearJList();
         Utilities.removeRadioButtons(this.pnlRadioButtons);

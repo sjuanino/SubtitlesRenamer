@@ -166,13 +166,13 @@ public final class Utilities {
     }
     
     /**
-     * Copia un archivo de una fuente a otro destino
+     * Mueve un archivo de una fuente a otro destino
      * @param source Archivo fuente
      * @param dest Archivo destino
      */
-    public static void copyOneFile(File source, File dest) {
+    public static void moveOneFile(File source, File dest) {
         try {
-            Files.copy(source.toPath(), dest.toPath()); 
+            Files.move(source.toPath(), dest.toPath()); 
         } catch (IOException e) { 
             e.printStackTrace();
         }
